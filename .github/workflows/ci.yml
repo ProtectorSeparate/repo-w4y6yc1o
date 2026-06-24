@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-and-lint:
+    name: Test and lint repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run repository tests
+        run: |
+          test -f README.md
+          test -f CONTRIBUTING.md
+          test -d .github/workflows
+
+      - name: Verify honest-boundary copy
+        run: |
+          grep -F "This repository is a lightweight scaffold for candidate enhancement work." README.md
+          grep -F "it does not include runtime features, hosted services, or production guarantees" README.md
+          grep -F 'Preserve the README "Product copy" section and its honest-boundary wording.' CONTRIBUTING.md
+
+      - name: Lint Markdown formatting
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import sys
+
+          failed = False
+          for path in sorted(Path('.').glob('*.md')):
+              text = path.read_text()
+              if not text.endswith('\n'):
+                  print(f'{path}: missing trailing newline')
+                  failed = True
+              for line_number, line in enumerate(text.splitlines(), 1):
+                  if line.rstrip() != line:
+                      print(f'{path}:{line_number}: trailing whitespace')
+                      failed = True
+
+          sys.exit(1 if failed else 0)
+          PY
