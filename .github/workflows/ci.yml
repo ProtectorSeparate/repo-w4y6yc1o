@@ -18,6 +18,12 @@ jobs:
           test -f CONTRIBUTING.md
           test -d .github/workflows
 
+      - name: Verify honest-boundary copy
+        run: |
+          grep -F "This repository is a lightweight scaffold for candidate enhancement work." README.md
+          grep -F "it does not include runtime features, hosted services, or production guarantees" README.md
+          grep -F 'Preserve the README "Product copy" section and its honest-boundary wording.' CONTRIBUTING.md
+
       - name: Lint Markdown formatting
         run: |
           python - <<'PY'

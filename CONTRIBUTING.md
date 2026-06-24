@@ -6,6 +6,12 @@
 - Prefer clear names and concise documentation over unnecessary comments.
 - Run the repository checks before opening a pull request.
 
+## Product copy standards
+
+- Preserve the README "Product copy" section and its honest-boundary wording.
+- Do not claim runtime features, hosted services, production readiness, or release guarantees until the capability exists in the repository.
+- Update product copy and implementation together when repository capabilities change.
+
 ## Branch naming
 
 Use short, descriptive branch names with a category prefix:
